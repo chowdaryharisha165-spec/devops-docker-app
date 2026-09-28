@@ -1,0 +1,22 @@
+pipeline {
+    agent any 
+
+stages {
+    stage('Checkout') {
+       steps {
+           checkout scm
+         }
+      }
+      stage('Bulid') {
+         steps {
+             echo 'Buliding application...'
+             sh'echo "Artifacts generated successfully"'
+          }
+      }
+  }
+  post {
+      always {
+          echo 'Bulid completed.'
+        }
+      }
+   }
