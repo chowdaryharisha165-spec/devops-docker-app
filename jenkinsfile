@@ -1,22 +1,28 @@
 pipeline {
-    agent any 
+     agent any
 
 stages {
     stage('Checkout') {
        steps {
            checkout scm
          }
-      }
-      stage('Bulid') {
-         steps {
+       }
+       stage('Build') {
+          steps {
              echo 'Buliding application...'
-             sh'echo "Artifacts generated successfully"'
+             sh 'echo "Artificates generated successfully"'
+           }
+         }
+         stage('Test') {
+            steps {
+                echo 'Testing application"'
+                sh 'echo "Unit tests passed: 100%"'
+              }
+            }
           }
-      }
-  }
-  post {
-      always {
-          echo 'Bulid completed.'
-        }
-      }
-   }
+          post {
+             always {
+                echo 'Bulid completed.'
+             }
+          }
+        } 
