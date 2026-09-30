@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  database:
+    image: mongo:latest
+    container_name: devops-db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    volumes:
+      - db-data:/data/db
+    networks:
+      - devops-network
+
+  backend:
+    build: .
+    image: harishachowdary/devops-docker-app:latest
+    container_name: devops-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: database
+    depends_on:
+      - database
+    networks:
+      - devops-network
+
+  frontend:
+    image: nginx:alpine
+    container_name: devops-frontend
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    depends_on:
+      - backend
+    networks:
+      - devops-network
+
+volumes:
+  db-data:
+
+networks:
+  devops-network:
+    driver: bridge
